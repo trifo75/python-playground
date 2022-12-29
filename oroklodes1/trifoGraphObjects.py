@@ -3,28 +3,30 @@ import pygame
 import math
 
 class Element():
-    # objektum kezdeti koordinatai
-    x_orig = 350
-    y_orig = 200
 
-    # objektum aktualis koordinatai
-    xpos = x_orig
-    ypos = y_orig
+    def __init__(self):
+        # objektum kezdeti koordinatai
+        self.x_orig = 350
+        self.y_orig = 200
 
-    # objektum iranya (fok) es sebessege (pixel/ciklus)
-    speed = 0
-    dir = 0
+        # objektum aktualis koordinatai
+        self.xpos = self.x_orig
+        self.ypos = self.y_orig
 
-    # random valtoztassa-e a semesseget/iranyt a move() metodus
-    randomize_speed = True
-    randomize_dir = True
+        # objektum iranya (fok) es sebessege (pixel/ciklus)
+        self.speed = 0
+        self.dir = 0
 
-    # random valtoztatas hatarai
-    max_dir_change = 4
-    max_speed_change = .1
+        # random valtoztassa-e a semesseget/iranyt a move() metodus
+        self.randomize_speed = True
+        self.randomize_dir = True
 
-    # legyen basic szine
-    color = (0, 255, 0)
+        # random valtoztatas hatarai
+        self.max_dir_change = 4
+        self.max_speed_change = .1
+
+        # legyen basic szine
+        self.color = (0, 255, 0)
 
     def chg_dir_random(self):
         """
@@ -59,8 +61,11 @@ class Element():
         self.ypos += math.sin(dir_rad) * self.speed
         
 class Rectangle(Element):
-    xsize = 20
-    ysize = 20
+
+    def __init__(self):
+        Element.__init__(self)
+        self.xsize = 20
+        self.ysize = 20
 
     def draw(self,my_screen):
         posx = self.xpos - self.xsize / 2
@@ -68,7 +73,10 @@ class Rectangle(Element):
         pygame.draw.rect(my_screen,self.color,(posx,posy,self.xsize,self.ysize))
 
 class Circle(Element):
-    radius = 10
+
+    def __init__(self):
+        Element.__init__(self)
+        self.radius = 10
 
     def draw(self,my_screen):
         posx = self.xpos - self.radius
