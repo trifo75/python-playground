@@ -4,6 +4,10 @@ import math
 
 class Element():
 
+    self.tibi = 6
+    
+
+
     def __init__(self):
         # objektum kezdeti koordinatai
         self.x_orig = 350
