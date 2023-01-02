@@ -5,13 +5,24 @@ import random
 
 # paraméterek
 # ennyi objektum keletkezzen
-num_elements = 200 
+num_elements = 200
 
 # Define some colors
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
+
+
+
+
+pygame.init()
+ 
+# Set the width and height of the screen [width, height]
+size = (1200, 800)
+screen = pygame.display.set_mode(size)
+ 
+pygame.display.set_caption("Szaladgáló bigyók")
 
 
 # grafikus elemek feltöltése
@@ -22,11 +33,16 @@ objectlist = []
 for o in range(num_elements):
 
     if random.getrandbits(1):
-        newobject = tgo.Rectangle()
+        newobject = tgo.Rectangle(screen)
         newobject.color = RED
+        newobject.speed = 5
+        #newobject.randomize_speed = False
     else:
-        newobject = tgo.Circle()
+        newobject = tgo.Circle(screen)
         newobject.color = GREEN
+        newobject.speed = 2
+        #newobject.randomize_dir = False
+        newobject._bounce = newobject._bouncewrap1
 
     newobject.dir = random.random() * 360
     
@@ -34,15 +50,6 @@ for o in range(num_elements):
     
 
 
-
-pygame.init()
- 
-# Set the width and height of the screen [width, height]
-size = (700, 500)
-screen = pygame.display.set_mode(size)
- 
-pygame.display.set_caption("My Game")
- 
 # Loop until the user clicks the close button.
 done = False
  
