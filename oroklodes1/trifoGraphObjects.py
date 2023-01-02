@@ -66,7 +66,6 @@ class Element():
         pass
 
 
-
     def move(self):
         """
         mozgas egy lepessel sebesseg es irany alapjan
@@ -108,11 +107,6 @@ class Element():
         else:
             self.ypos += delta_y
         
-
-
-
-
-            
         
 class Rectangle(Element):
 
