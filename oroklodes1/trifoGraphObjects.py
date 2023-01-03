@@ -115,7 +115,7 @@ class Rectangle(Element):
         self.xsize = 20
         self.ysize = 20
 
-    def draw(self,my_screen):
+    def draw(self):
         posx = self.xpos - self.xsize / 2
         posy = self.ypos - self.ysize / 2
         pygame.draw.rect(self.screen,self.color,(posx,posy,self.xsize,self.ysize))
@@ -128,10 +128,58 @@ class Circle(Element):
         super().__init__(*args)
         self.radius = 10
 
-    def draw(self,my_screen):
+    def draw(self):
         posx = self.xpos
         posy = self.ypos
         pygame.draw.circle(self.screen,self.color,(posx,posy),self.radius)
         pygame.draw.circle(self.screen,BLACK,(self.xpos,self.ypos),2)
 
-        
+class DirectionRectangle(Element):
+
+    def __init__(self,*args):
+        super().__init__(*args)
+        self._width = 10
+        self._length = 10
+
+        # a _width és _length alapján definiáljuk a sarkokat a 0fok állásban
+        # a középponthoz képest (xpos és ypos)
+        self._corners = [
+            (-self._width/2,-self._length/2),
+            (+self._width/2,-self._length/2),
+            (+self._width/2,+self._length/2),
+            (-self._width/2,+self._length/2)
+        ]
+        # ebben a managed property-ben fogjuk visszaadni az elfordított sarkokat
+        # ha "None", akkor a getter metódus legenerálja
+        # ha a dir változik, akkor None-ra kell állítani
+        self._rotated_corners = None
+
+    @property
+    def rotated_corners(self):
+        #if self._rotated_corners == None:
+        if True:
+            out = []
+            for i, point in enumerate(self._corners):
+                rx, ry = rotatepoint(point[0],point[1],self.dir)
+                out.append((rx + self.xpos, ry + self.ypos))
+
+        return out
+
+    def draw(self):
+        pygame.draw.lines(self.screen,self.color,True,self.rotated_corners)
+
+
+
+
+
+
+def rotatepoint(x,y,a):
+    """
+    rotate vector (0,0) -> (x,y) with "a" degrees
+    returns the coordinates of rotated point
+    """
+
+    xrot = x * math.cos(math.radians(a)) - y * math.sin(math.radians(a))
+    yrot = x * math.sin(math.radians(a)) + y * math.cos(math.radians(a))
+
+    return xrot, yrot
