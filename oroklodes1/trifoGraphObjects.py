@@ -138,16 +138,16 @@ class DirectionRectangle(Element):
 
     def __init__(self,*args):
         super().__init__(*args)
-        self._width = 10
-        self._length = 10
+        self._width = 20
+        self._length = 32
 
         # a _width és _length alapján definiáljuk a sarkokat a 0fok állásban
         # a középponthoz képest (xpos és ypos)
         self._corners = [
-            (-self._width/2,-self._length/2),
-            (+self._width/2,-self._length/2),
-            (+self._width/2,+self._length/2),
-            (-self._width/2,+self._length/2)
+            (-self._length/2,-self._width/2),
+            (+self._length/2,-self._width/2),
+            (+self._length/2,+self._width/2),
+            (-self._length/2,+self._width/2)
         ]
         # ebben a managed property-ben fogjuk visszaadni az elfordított sarkokat
         # ha "None", akkor a getter metódus legenerálja
@@ -166,7 +166,8 @@ class DirectionRectangle(Element):
         return out
 
     def draw(self):
-        pygame.draw.lines(self.screen,self.color,True,self.rotated_corners)
+        pygame.draw.polygon(self.screen,self.color,self.rotated_corners)
+        pygame.draw.lines(self.screen,BLACK,True,self.rotated_corners)
 
 
 
