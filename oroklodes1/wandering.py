@@ -5,13 +5,14 @@ import random
 
 # paraméterek
 # ennyi objektum keletkezzen
-num_elements = 200
+num_elements = 40
 
 # Define some colors
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
+BLUE = (0, 0, 255)
 
 
 
@@ -47,6 +48,14 @@ for o in range(num_elements):
     newobject.dir = random.random() * 360
     
     objectlist.append(newobject)
+
+
+for o in range(20):
+    newobject = tgo.DirectionRectangle(screen)
+    newobject.color = BLUE
+    newobject.speed = 3
+    newobject.dir = random.random() * 360
+    objectlist.append(newobject)
     
 
 
@@ -77,7 +86,7 @@ while not done:
     # --- Drawing code should go here
     for i, object in enumerate(objectlist):
         object.move()
-        object.draw(screen)
+        object.draw()
 
     # --- Go ahead and update the screen with what we've drawn.
     pygame.display.flip()
