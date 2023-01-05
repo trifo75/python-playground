@@ -39,6 +39,12 @@ class Element():
         # legyen basic szine
         self.color = (0, 255, 0)
 
+        # mozgás pálya megjegyzése listába
+        # tail_length pontot rogzitunk a "tail" listaba
+        self.draw_tail = True
+        self.tail_length = 30
+        self.tail = []
+
 
 
     def chg_dir_random(self):
@@ -65,12 +71,36 @@ class Element():
     def _bouncewrap2(self):
         pass
 
+    def _pos_to_tail(self):
+        """
+        az objektum aktualis poziciojat letesszuk a "tail" propertybe
+        """
+
+        # ha már elértük a kívánt farokhosszat, akkor a 0. elemet eldobjuk
+        # a tárolás előtt
+        if len( self.tail) > self.tail_length:
+            self.tail.pop(0)
+
+        # és a tail-hez hozzáadjuk az aktuális helyet tuple-ként.
+        self.tail.append((self.xpos,self.ypos))
+
+    def _draw_tail(self):
+        """
+        a "farok" kirajzolása
+        """
+        boost_factor = 10
+        if self.draw_tail & (len(self.tail) > 2 * boost_factor):
+            pygame.draw.lines(self.screen,self.color,False,self.tail[::boost_factor],2)
 
     def move(self):
         """
         mozgas egy lepessel sebesseg es irany alapjan
         ha kell, elotte randomizalunk
         """
+
+        # hely adatok tarolasa a "tail" reszere
+        self._pos_to_tail()
+
         if self.randomize_speed :
             self.chg_speed_random()
 
@@ -120,6 +150,7 @@ class Rectangle(Element):
         posy = self.ypos - self.ysize / 2
         pygame.draw.rect(self.screen,self.color,(posx,posy,self.xsize,self.ysize))
         pygame.draw.circle(self.screen,BLACK,(self.xpos,self.ypos),2)
+        self._draw_tail()
         
 
 class Circle(Element):
@@ -133,6 +164,7 @@ class Circle(Element):
         posy = self.ypos
         pygame.draw.circle(self.screen,self.color,(posx,posy),self.radius)
         pygame.draw.circle(self.screen,BLACK,(self.xpos,self.ypos),2)
+        self._draw_tail()
 
 class DirectionRectangle(Element):
 
@@ -168,6 +200,7 @@ class DirectionRectangle(Element):
     def draw(self):
         pygame.draw.polygon(self.screen,self.color,self.rotated_corners)
         pygame.draw.lines(self.screen,BLACK,True,self.rotated_corners)
+        self._draw_tail()
 
 
 

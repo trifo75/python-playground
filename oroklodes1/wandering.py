@@ -5,7 +5,7 @@ import random
 
 # paraméterek
 # ennyi objektum keletkezzen
-num_elements = 40
+num_elements = 100
 
 # Define some colors
 BLACK = (0, 0, 0)
@@ -32,28 +32,31 @@ pygame.display.set_caption("Szaladgáló bigyók")
 # a random irány lehet, hogy jobb lenne konstruktorként...
 objectlist = []
 for o in range(num_elements):
-
-    if random.getrandbits(1):
-        newobject = tgo.Rectangle(screen)
-        newobject.color = RED
-        newobject.speed = 5
-        #newobject.randomize_speed = False
-    else:
-        newobject = tgo.Circle(screen)
-        newobject.color = GREEN
-        newobject.speed = 2
-        #newobject.randomize_dir = False
-        newobject._bounce = newobject._bouncewrap1
+    newobject = tgo.Rectangle(screen)
+    newobject.color = RED
+    newobject.speed = 5
+    #newobject.randomize_speed = False
 
     newobject.dir = random.random() * 360
-    
+    objectlist.append(newobject)
+
+for o in range(num_elements):
+    newobject = tgo.Circle(screen)
+    newobject.color = GREEN
+    newobject.speed = 2
+    #newobject.randomize_dir = False
+    newobject._bounce = newobject._bouncewrap1
+
+    newobject.dir = random.random() * 360
     objectlist.append(newobject)
 
 
-for o in range(20):
+for o in range(num_elements):
     newobject = tgo.DirectionRectangle(screen)
     newobject.color = BLUE
     newobject.speed = 3
+    newobject.max_dir_change = 10
+
     newobject.dir = random.random() * 360
     objectlist.append(newobject)
     
@@ -87,6 +90,7 @@ while not done:
     for i, object in enumerate(objectlist):
         object.move()
         object.draw()
+        #print(object.tail_length)
 
     # --- Go ahead and update the screen with what we've drawn.
     pygame.display.flip()
