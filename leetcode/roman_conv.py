@@ -44,41 +44,14 @@ def int_to_roman(i):
     # input csekk - ha az int(i) elhasal, rossz volt az input.
     i = int(i)
 
+    # 3999-ig kezeljük a számokat
+    # a 4000-hez 4db 'M' kéne, ami a szabályok szerint nem lehet
+    if i >= 4000:
+        raise ValueError
 
-    # 1000-es helyiérték feltöltése 'M'-ekkel
-    out = 'M' * (i // 1000)
-
-    # 100-as helyiérték feltöltése
-    r = {
-        1: 'C',
-        2: 'CC',
-        3: 'CCC',
-        4: 'CD',
-        5: 'D',
-        6: 'DC',
-        7: 'DCC',
-        8: 'DCCC',
-        9: 'CM',
-        0: ''
-    }
-    out += r[i // 100 % 10]
-
-    # 10-es helyiérték feltöltése
-    r = {
-        1: 'X',
-        2: 'XX',
-        3: 'XXX',
-        4: 'XL',
-        5: 'L',
-        6: 'LX',
-        7: 'LXX',
-        8: 'LXXX',
-        9: 'XC',
-        0: ''
-    }
-    out += r[i // 10 % 10]
-
-    # 1-es helyiérték feltöltése
+    # 1-es számjegyek
+    # mivel a 10-es és 100-as ugyanilyen szerkezetben épül fel
+    # csak más betűkkel, azokat a translate metódussal állítjuk elő
     r = {
         1: 'I',
         2: 'II',
@@ -91,10 +64,25 @@ def int_to_roman(i):
         9: 'IX',
         0: ''
     }
+
+    # 1000-es helyiérték feltöltése 'M'-ekkel
+    out = 'M' * (i // 1000)
+
+    # 100-as helyiérték feltöltése
+    # 100-as behelyettesítés: IVX -> CDM
+    translate_100 = ''.maketrans('IVX','CDM')
+    out += r[i // 100 % 10].translate(translate_100)
+
+    # 10-es helyiérték feltöltése
+    # 10-es behelyettesítés:  IVX -> XLC
+
+    translate_10 = ''.maketrans('IVX','XLC')
+    out += r[i // 10 % 10].translate(translate_10)
+
+    # 1-es helyiérték feltöltése
     out += r[ i % 10 ]
 
     return out
-
 
     
 
@@ -102,18 +90,25 @@ def int_to_roman(i):
 romanlist = []
 with open('roman_sample.txt', 'r', encoding='UTF-8') as file:
     while (line := file.readline().rstrip()):
+        # sor szétvágása 
+        # KÉRDÉS: hogyan lehet több egymást követő NEM SPACE szeparátort
+        # egyetlenként kezelni - ahogy a paraméter nélküli .split dolgozik?
         l = line.split()
         if len(l) == 3:
+            # kivágjuk csak a számokat és tuple-ként 
+            # hozzáadjuk a romanlist-hez
             romanlist.append((int(l[0]),l[2]))
 
 
 # test int to roman conversion
+# print failing items from sample
 for l in romanlist:
     r = int_to_roman(l[0])
     if r != l[1]:
         print(l,r)
 
 # test roman to int conversion
+# print failing items from sample
 for l in romanlist:
     i = roman_to_integer(l[1])
     if i != l[0]:
