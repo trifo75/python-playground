@@ -114,7 +114,7 @@ class Solution:
             outlist.append(self.words[d1])
             outlist.append(self.words[100])
 
-        if num <= 20:
+        if 0 < num <= 20:
             outlist.append(self.words[num])
         else:
             if d2 > 0:
@@ -148,13 +148,15 @@ class Solution:
         for mag in list(self.magnitudes.keys()):
             if num >= mag:
                 # separate triad for the actual magnitude
-                out += ' ' + self.triad_to_words((num // mag) % 1000) + ' ' + self.magnitudes[mag]
+                triad = (num // mag) % 1000
+                if triad > 0:
+                    out += ' ' + self.triad_to_words(triad) + ' ' + self.magnitudes[mag]
                 
         return out.lstrip().rstrip().title()
 
 
 s = Solution()
-testcase = 100
+testcase = 1000000
 print('X>' + s.numberToWords(testcase) + '<X')
 
 #for testcase in range(999):
