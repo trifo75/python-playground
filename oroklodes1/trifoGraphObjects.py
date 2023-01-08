@@ -42,7 +42,7 @@ class Element():
         # mozgás pálya megjegyzése listába
         # tail_length pontot rogzitunk a "tail" listaba
         self.draw_tail = True
-        self.tail_length = 30
+        self.tail_length = 300
         self.tail = []
 
 
@@ -88,7 +88,8 @@ class Element():
         """
         a "farok" kirajzolása
         """
-        boost_factor = 10
+        # csak minden boos_factor-odik pont kirajzolása
+        boost_factor = 7
         if self.draw_tail & (len(self.tail) > 2 * boost_factor):
             pygame.draw.lines(self.screen,self.color,False,self.tail[::boost_factor],2)
 
