@@ -5,14 +5,50 @@ class Solution:
 
     # szótárba felvesszük a vizsgálandó zárójelek
     # nyitó és záró verzióját
+
+    rebraces = {
+        ')': '(',
+        ']': '[',
+        '}': '{'
+    }
+            
+    def isValid(self, s: str) -> bool:
+
+        # verem a zárójelek számára
+        stack = []
+
+        # végigjárjuk az input stringet
+        for char in s:
+            # ha a char egy nyitó zárójel, akkor letesszük a verembe
+            if char in self.rebraces.values(): stack.append(char)
+
+            # ha a char egy záró zárójel, akkor...
+            if char in self.rebraces.keys():
+                # megnézzük, hogy üres-e a verem 
+                if stack:
+                    # ha nem üres, akkor kiveszünk egyet és megnézzük, hogy
+                    # char párja-e. Ha nem, akkor az input hibás
+                    if stack.pop() !=  self.rebraces[char]: return False
+                else:
+                    # ha üres volt a lista, akkor az input hibás
+                    return False
+
+        # A srting végére érve, ha a verem üres, akkor a string OK
+        # ha nem, akkor hibás
+        if not stack:
+            return True
+        else:
+            return False 
+
+
+        
     braces = {
         '(': ')',
         '[': ']',
         '{': '}'
     }
 
-            
-    def isValid(self, s: str) -> bool:
+    def isValid_resorcewaste(self, s: str) -> bool:
 
         if not isinstance(s,str): raise ValueError
 
