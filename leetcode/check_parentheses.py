@@ -16,6 +16,8 @@ class Solution:
 
         if not isinstance(s,str): raise ValueError
 
+        #print("Rekurzió indul. Paraméter: \"{}\"".format(s))
+
         length = len(s)
 
 
@@ -29,6 +31,7 @@ class Solution:
 
         openpos = 0
         while openpos < length:
+            #print("Külsö ciklus indul. openpos: {}".format(openpos))
             # ha záró zárójellel találkozunk, akkor az biztos rossz 
             if s[openpos] in list(self.braces.values()): return False
             
@@ -45,12 +48,13 @@ class Solution:
 
                 # megkeressük az adott nyitó zárójel záró párját
                 closepos = openpos
-                braces = 0
+                bracecount = 0
                 for closepos in range(openpos,length):
-                    if s[closepos] == bropen:  braces += 1 # nyitó: +1
-                    if s[closepos] == brclose: braces -= 1 # záró:  -1
+                    #print("belső ciklus indul. Openpos: {}, closepos: {}, bracecount: {}".format(openpos,closepos,bracecount))
+                    if s[closepos] == bropen:  bracecount += 1 # nyitó: +1
+                    if s[closepos] == brclose: bracecount -= 1 # záró:  -1
 
-                    if braces == 0: 
+                    if bracecount == 0: 
                         # amikor a braces = 0, akkor megvan a kinyitott zárójel párja
                         # a kettő közti szöveget rekurzívan megvizsgáljuk
 
@@ -63,6 +67,8 @@ class Solution:
                         # folytatjuk a keresést a köv. zárójelpárra
                         openpos = closepos + 1
                         break
+
+                    if bracecount != 0 and closepos == length -1: return False
                     
             # ha nem volt zárójel, akkor csak megyünk egyet előre az
             # openpos változóval       
@@ -82,6 +88,7 @@ class Solution:
 
 
 testcases = [
+    '{{}',
     '])}',
     ']',
     '(])',
