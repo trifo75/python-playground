@@ -1,34 +1,40 @@
 class Solution:
+
+    
     def insert(self, intervals: list[list[int]], newInterval: list[int]) -> list[list[int]]:
 
-        ins_lo = newInterval[0]
-        ins_hi = newInterval[1]
-        index_lo = None
-        index_hi = None
+        sortedlist = sorted( intervals + [newInterval])
 
-        for i, item in enumerate(intervals):
-            if (index_lo == None) and (item[0] <= ins_lo <= item[1]):
-                index_lo = i
-
-            if (index_hi == None) and (item[0] <= ins_hi <= item[1]):
-                index_hi = i
-
-        intervals[index_lo][1] = intervals[index_hi][1]
-        for i in range(index_lo+1,index_hi+1):
-            intervals.pop(index_lo+1)
-
-        return intervals
+        i=0
+        while i < len(sortedlist) - 1:
+            while sortedlist[i][1] >= sortedlist[i+1][0]:
+                if sortedlist[i][1] < sortedlist[i+1][1]: 
+                    sortedlist[i][1] = sortedlist[i+1][1]
+                sortedlist.pop(i+1)
+                if len(sortedlist) == i+1: break
+                
+            i+=1
             
-        print("Index lo: {}, index hi: {}".format(index_lo,index_hi))            
-        #print("Low: {}, high: {}".format(ins_lo,ins_hi))
-
-
+        return sortedlist
+            
+                   
+            
         
 
 
 s = Solution()
 
+
+
 testcases = [
+    {
+        'input_interval': [[0,2],[3,9]],
+        'insert_interval': [6,8]
+    },
+    {
+        'input_interval': [[1,5]],
+        'insert_interval': [2,3]
+    },
     {
         'input_interval': [[1,2],[3,5],[6,7],[8,10],[12,16]],
         'insert_interval': [4,8]
@@ -37,13 +43,29 @@ testcases = [
         'input_interval': [[1,3],[6,9]],
         'insert_interval': [2,5]
     },
+    {
+        'input_interval': [],
+        'insert_interval': [5,7]
+    },
+    {
+        'input_interval': [[1,5]],
+        'insert_interval': [6,8]
+    },
 
 ]
 
 for i, testcase in enumerate(testcases):
-    print("Teszt {}: bemeneti lista: {}, beszúrandó: {}"\
-        .format(i,testcase['input_interval'],testcase['insert_interval']))
-    print(s.insert(testcase['input_interval'],testcase['insert_interval']))
+    print("\nTeszt  {}".format(i))
+    print("Bemeneti lista: {}, beszúrandó: {}"\
+        .format(testcase['input_interval'],testcase['insert_interval']))
+
+    outlist = s.insert(testcase['input_interval'],testcase['insert_interval']) 
+    print(".               {}".format(outlist))
+    print()
+
+
+
+
 
 """ 
 Example 1:
