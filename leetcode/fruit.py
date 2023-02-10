@@ -1,116 +1,6 @@
 # 904. Fruit into baskets
 import timeit
 
-
-class Solution_nemjo:
-    def totalFruit(self, fruits: list[int]) -> int:
-
-        # when the input list is empty, no fruit can be harvested
-        if len(fruits) == 0: return 0 
-
-
-        # compress "fruits" list into "fruitgroups"
-        # tuples as ( fruit,  number_of_same_type_neighbors)
-        prevfruit = fruits[0]
-        fruitgroups=[]
-        fruitcount=0
-
-        for fruit in fruits:
-            
-            if fruit == prevfruit:
-                fruitcount +=1
-            else:
-                fruitgroups.append((prevfruit,fruitcount))
-                fruitcount = 1
-
-            prevfruit = fruit
-
-        fruitgroups.append((fruit,fruitcount))
-
-        
-        # find longest sequence of max 2 types
-        max = 0
-        for i in range(len(fruitgroups)):
-            baskets = list()
-            curr = 0
-
-            for fruitgroup in fruitgroups[i:]:
-                if not fruitgroup[0] in baskets:
-                    baskets.append(fruitgroup[0])
-
-                if len(baskets) > 2: break
-                curr += fruitgroup[1]
-
-            if curr > max:
-                max = curr
-
-
-        return max
-
-
-
-
-    def totalFruit_nemjo(self, fruits: list[int]) -> int:
-        """
-        try to start from every item in input list and count number of collectable fruits
-        collect fruit types in "baskets" list. break cycle when list length gets longer than 2
-
-        """
-
-        max = 0
-        curr = 0
-
-
-        for i in range(len(fruits)):
-
-            baskets = list()
-            curr = 0
-            numbaskets = 0
-
-            for fruit in fruits[i:]:
-                if not fruit in baskets: 
-                    baskets.append(fruit)
-                    numbaskets += 1
-
-                if numbaskets > 2: break
-                curr += 1
-
-            if curr > max:
-                max = curr
-                max = max + 1
-
-        return max 
-
-from collections import defaultdict
-class Solution_ezsejo:
-
-    def totalFruit(self, fruits: list[int]) -> int:
-
-        buckets = []
-        trackbuckets = []
-
-        max = 0
-        for fruit in fruits:
-            if not fruit in trackbuckets:
-                trackbuckets.append(fruit)
-                buckets.append(defaultdict(lambda: 0))
-                if len(trackbuckets) > 2:
-                    trackbuckets.pop(0)
-
-            for j, bucket in enumerate(buckets):
-                buckets[j][fruit] +=1
-
-                if len(buckets[j]) > 2:
-                    curr = sum(list(dict(buckets[j]).values())[:2])
-                    if curr > max: max = curr
-                    buckets.pop(j)
-                 
-        pass
-
-
-        return max 
-
-
 from collections import defaultdict
 class Solution:
 
@@ -144,18 +34,26 @@ class Solution:
 
                     # HERE IS THE PROBLEM: popping the item makes the
                     # next entry to be skipped!
-                    buckets.pop(j)
-
+                    # buckets.pop(j)
+            buckets = list(filter(lambda x:len(x)<=2,buckets))
             
-        # TODO: the end of the cycle is not handlet - if the longest
+        # Handling the buckets remaining after last cycle - if the longest
         # list is at the end of the list then it is not counted
 
+        for i, bucket in enumerate(buckets):
+            curr = sum(list(dict(bucket).values())[:2])
+            if curr > max: max = curr
+
+        # and returning the result
         return max
 
 
 
 
+
+
 testcases = [
+    [1,0,1,4,1,4,1,2,3],
     [3,3,3,1,2,1,1,2,3,3,4],
     [1,2,1],
     [0,1,2,2],
