@@ -1,5 +1,6 @@
 **/__pycache__/
 oroklodes1/__pycache__/*.*
 **/__pycache__/*.*
+**/.hypothesis
+#oroklodes1/__pycache__/trifoGraphObjects.cpython-39.pyc
 
-oroklodes1/__pycache__/trifoGraphObjects.cpython-39.pyc
