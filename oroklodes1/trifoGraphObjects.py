@@ -44,6 +44,8 @@ class Element():
         self.draw_tail = True
         self.tail_length = 300
         self.tail = []
+        self.boost_factor = 7
+        self.__step_counter = 0
 
 
 
